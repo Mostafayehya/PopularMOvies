@@ -1,6 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="120sp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/layout_margin_left"
+        android:text="Movie Name"
+        android:textSize="40sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <ImageView
+            android:id="@+id/movie_thumbnail"
+            android:layout_width="88dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/layout_margin_left"
+            android:src="R.drawable.img1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/release_date"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/layout_margin_left"
+                android:layout_weight="1"
+                android:text="release data"
+                android:textSize="@dimen/text_size_details" />
+
+            <TextView
+                android:id="@+id/duration"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/layout_margin_left"
+                android:layout_weight="1"
+                android:text="duration"
+                android:textSize="@dimen/text_size_details" />
+
+            <TextView
+                android:id="@+id/rating"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/layout_margin_left"
+
+                android:layout_weight="1"
+                android:text="rating"
+                android:textSize="@dimen/text_size_details" />
+
+            <Button
+                android:id="@+id/favourite_button"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/layout_margin_left"
+                android:layout_weight="2"
+                android:text="add to favourite" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/movie_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:textSize="@dimen/text_size_summary" />
+
 
 </LinearLayout>

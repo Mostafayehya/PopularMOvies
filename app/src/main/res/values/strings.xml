@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">PopularMOvies</string>
+    <dimen name="layout_margin_left">30dp</dimen>
+    <dimen name="text_size_details">20dp</dimen>
+    <dimen name="text_size_summary">20dp</dimen>
 </resources>
