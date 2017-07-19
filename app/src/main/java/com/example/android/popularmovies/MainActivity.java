@@ -1,5 +1,6 @@
 package com.example.android.popularmovies;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -25,13 +26,15 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView imageRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_images);
         imageRecyclerView.setHasFixedSize(true);
-        GridLayoutManager gridManager= new GridLayoutManager(this,2);
 
-
-
+        //this part to handle the orientation of the device and adjusting the GridLayoutManger accordingly
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            imageRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        } else {
+            imageRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        }
         imageRecyclerView.setAdapter(imageAdapter);
 
-        imageRecyclerView.setLayoutManager(gridManager);
 
     }
 }
