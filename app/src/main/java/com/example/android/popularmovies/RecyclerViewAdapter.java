@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
  */
 
 //this is a comment to be able to add the file to the github repo.
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private int[] mData;
     private LayoutInflater mInflater;
