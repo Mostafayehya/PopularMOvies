@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,5 +39,30 @@ public class MainActivity extends AppCompatActivity {
         imageRecyclerView.setAdapter(imageAdapter);
 
 
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu_layout, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.action_sortby_popularity) {
+            //excute task that takes the url requesting the most popularity movies
+            return true;
+        }
+
+        if (id == R.id.action_sortby_rating) {
+            //excute task that request top rated movies
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

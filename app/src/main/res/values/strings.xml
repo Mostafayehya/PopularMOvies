@@ -3,4 +3,6 @@
     <dimen name="layout_margin_left">30dp</dimen>
     <dimen name="text_size_details">20dp</dimen>
     <dimen name="text_size_summary">20dp</dimen>
+    <string name="sort_by_popularity">Most Popular</string>
+    <string name="sort_by_rating">Top-Rated</string>
 </resources>

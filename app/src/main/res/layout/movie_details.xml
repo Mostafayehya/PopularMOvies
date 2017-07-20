@@ -26,7 +26,7 @@
             android:layout_width="88dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/layout_margin_left"
-            android:src="R.drawable.img1" />
+            android:src="@drawable/img3" />
 
         <LinearLayout
             android:layout_width="wrap_content"
