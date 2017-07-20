@@ -14,16 +14,21 @@ import com.squareup.picasso.Picasso;
  */
 
 //this is a comment to be able to add the file to the github repo.
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     private int[] mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private final MovieAdapterOnClickHandler mClickHandler;
+
+    public interface MovieAdapterOnClickHandler {
+        void onClick(int imgResourceId);
+    }
 
     // data is passed into the constructor
-    public RecyclerViewAdapter(Context context, int[] data) {
+    public MovieAdapter(MovieAdapterOnClickHandler clickHandler,Context context) {
+        mClickHandler = clickHandler;
         mInflater = LayoutInflater.from(context);
-        mData = data;
     }
 
     // inflates the cell layout from xml when needed
@@ -36,7 +41,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
     @Override
-    public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(MovieAdapter.ViewHolder holder, int position) {
         Context myContext = holder.mImageView.getContext();
 //        holder.mImageView.setImageResource(mData[position]);
         Picasso.with(myContext).load(mData[position]).into(holder.mImageView);
@@ -62,9 +67,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+                int adapterPostion = getAdapterPosition();
+                 int imgResourceID = mData[adapterPostion];
+                mClickHandler.onClick(imgResourceID);
+            }
         }
-    }
+
 
 
     // allows clicks events to be caught
@@ -72,10 +80,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.mClickListener = itemClickListener;
     }
 
+    public void setMoviesImages(int[] data) {
+        mData = data;
+    }
+
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
+
 }
 
 

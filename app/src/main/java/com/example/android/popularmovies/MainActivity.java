@@ -1,5 +1,6 @@
 package com.example.android.popularmovies;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
     //this is a comment to be able to add the file to the git
 
@@ -25,7 +26,9 @@ public class MainActivity extends AppCompatActivity {
 
         };
 
-        RecyclerViewAdapter imageAdapter = new RecyclerViewAdapter(this, imagesDB);
+        MovieAdapter imageAdapter = new MovieAdapter(this,this);
+
+        imageAdapter.setMoviesImages(imagesDB);
 
         RecyclerView imageRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_images);
         imageRecyclerView.setHasFixedSize(true);
@@ -41,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onClick(int imgResourceID) {
+
+        Intent intentToStartMovieDetailsActivity = new Intent (this,MovieDetails.class);
+        intentToStartMovieDetailsActivity.putExtra("resourceId",imgResourceID);
+        startActivity(intentToStartMovieDetailsActivity);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
