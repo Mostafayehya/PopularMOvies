@@ -5,4 +5,5 @@
     <dimen name="text_size_summary">20dp</dimen>
     <string name="sort_by_popularity">Most Popular</string>
     <string name="sort_by_rating">Top-Rated</string>
+    <string name="error_message">couldn\'t fetch data</string>
 </resources>
