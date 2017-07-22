@@ -10,8 +10,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
+
+    private TextView mErrorMessageDisplay;
+    private ProgressBar mLoadingIndicator;
+    private RecyclerView imageRecyclerView;
+    private MovieAdapter imageAdapter;
+
 
     //this is a comment to be able to add the file to the git
 
@@ -27,12 +38,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         };
 
-        MovieAdapter imageAdapter = new MovieAdapter(this,this);
-
+        imageRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_images);
+        imageAdapter = new MovieAdapter(this, this);
         imageAdapter.setMoviesImages(imagesDB);
-
-        RecyclerView imageRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_images);
         imageRecyclerView.setHasFixedSize(true);
+
+        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
+        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
         //this part to handle the orientation of the device and adjusting the GridLayoutManger accordingly
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -42,32 +54,73 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
         imageRecyclerView.setAdapter(imageAdapter);
 
-
     }
 
     @Override
     public void onClick(int imgResourceID) {
 
-        Intent intentToStartMovieDetailsActivity = new Intent (this,MovieDetails.class);
-        intentToStartMovieDetailsActivity.putExtra("resourceId",imgResourceID);
+        Intent intentToStartMovieDetailsActivity = new Intent(this, MovieDetails.class);
+        intentToStartMovieDetailsActivity.putExtra("resourceId", imgResourceID);
         startActivity(intentToStartMovieDetailsActivity);
     }
 
+    private void showMoviesDataView() {
+                /* First, make sure the error is invisible */
+        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+                /* Then, make sure the weather data is visible */
+        imageRecyclerView.setVisibility(View.VISIBLE);
+    }
 
-    class loadMovieTask extends AsyncTask<String,Void,String>{
+    /**
+     * This method will make the error message visible and hide the Movies' posters
+     * View.
+     * <p>
+     * Since it is okay to redundantly set the visibility of a View, we don't
+     * need to check whether each view is currently visible or invisible.
+     */
+    private void showErrorMessage() {
+                /* First, hide the currently visible data */
+        imageRecyclerView.setVisibility(View.INVISIBLE);
+               /* Then, show the error */
+        mErrorMessageDisplay.setVisibility(View.VISIBLE);
+    }
+
+
+    class loadMovieTask extends AsyncTask<String, Void, Movie[]> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mLoadingIndicator.setVisibility(View.VISIBLE);
         }
 
         @Override
-        protected String doInBackground(String... params) {
-            return null;
+        protected Movie[] doInBackground(String... params) {
+  /* If there's no urls , there's nothing to look up. */
+            if (params.length == 0) {
+                return null;
+            }
+
+            String urlStringToBeRequested = params[0];
+            URL movieRequestUrl = NetworkUtils.buildUrl(urlStringToBeRequested);
+
+            try {
+                String jsonMovieResponse = NetworkUtils
+                        .getResponseFromHttpUrl(movieRequestUrl);
+
+                Movie[] arrayOfMovies = OpenMovieJsonUtils
+                        .getArrayOfMoviesFromJson(MainActivity.this, jsonMovieResponse);
+
+                return arrayOfMovies;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+        protected void onPostExecute(Movie m[]) {
+            super.onPostExecute(m);
         }
     }
 

@@ -20,6 +20,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private final MovieAdapterOnClickHandler mClickHandler;
+    private static final String MOVIE_POSTER_BASE_URL  = "http://image.tmdb.org/t/p/w185/";
 
     public interface MovieAdapterOnClickHandler {
         void onClick(int imgResourceId);
@@ -43,7 +44,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(MovieAdapter.ViewHolder holder, int position) {
         Context myContext = holder.mImageView.getContext();
-//        holder.mImageView.setImageResource(mData[position]);
         Picasso.with(myContext).load(mData[position]).into(holder.mImageView);
         holder.mImageView.setVisibility(View.VISIBLE);
     }
