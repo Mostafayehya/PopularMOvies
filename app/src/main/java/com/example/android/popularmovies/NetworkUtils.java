@@ -18,8 +18,7 @@ public final class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
-    private static final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=c116e57a4053a96cf95605c119b5f697";
-    ***REMOVED***
+
 
 
     public static URL buildUrl(String urlQuery) {

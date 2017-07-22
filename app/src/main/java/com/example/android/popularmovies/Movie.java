@@ -13,15 +13,14 @@ public class Movie implements Parcelable {
     String rating;
     String summary;
     String year;
-    String duration;
     String imageURLRelativePath;
 
-    public Movie(String name, String rating, String summary, String year, String duration, String image) {
+    public Movie(String name, String rating, String summary, String year,  String image) {
         this.name = name;
         this.rating = rating;
         this.summary = summary;
         this.year = year;
-        this.duration = duration;
+
         this.imageURLRelativePath= image;
     }
 
@@ -30,7 +29,6 @@ public class Movie implements Parcelable {
         rating = in.readString();
         summary = in.readString();
         year = in.readString();
-        duration = in.readString();
         imageURLRelativePath= in.readString();
     }
 
@@ -46,7 +44,6 @@ public class Movie implements Parcelable {
         parcel.writeString(rating);
         parcel.writeString(summary);
         parcel.writeString(year);
-        parcel.writeString(duration);
         parcel.writeString(imageURLRelativePath);
     }
 
