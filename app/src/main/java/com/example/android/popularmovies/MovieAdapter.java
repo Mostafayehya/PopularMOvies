@@ -16,14 +16,14 @@ import com.squareup.picasso.Picasso;
 //this is a comment to be able to add the file to the github repo.
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
-    private int[] mData;
+    private Movie[] mMovieList = new Movie[20];
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private final MovieAdapterOnClickHandler mClickHandler;
     private static final String MOVIE_POSTER_BASE_URL  = "http://image.tmdb.org/t/p/w185/";
 
     public interface MovieAdapterOnClickHandler {
-        void onClick(int imgResourceId);
+        void onClick(Movie movie);
     }
 
     // data is passed into the constructor
@@ -44,14 +44,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(MovieAdapter.ViewHolder holder, int position) {
         Context myContext = holder.mImageView.getContext();
-        Picasso.with(myContext).load(mData[position]).into(holder.mImageView);
+        //MOVIE_POSTER_BASE_URL+mMovieList[position].imageURLRelativePath this is the complete movie image url .
+        Picasso.with(myContext).load(MOVIE_POSTER_BASE_URL+mMovieList[position].imageURLRelativePath).into(holder.mImageView);
         holder.mImageView.setVisibility(View.VISIBLE);
     }
 
     // total number of cells
     @Override
     public int getItemCount() {
-        return mData.length;
+        return 20;
     }
 
 
@@ -68,8 +69,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         @Override
         public void onClick(View view) {
                 int adapterPostion = getAdapterPosition();
-                 int imgResourceID = mData[adapterPostion];
-                mClickHandler.onClick(imgResourceID);
+                 Movie movieObjectToBeSentToTheMovieDetailsActivity= mMovieList[adapterPostion];
+                mClickHandler.onClick(movieObjectToBeSentToTheMovieDetailsActivity);
             }
         }
 
@@ -80,8 +81,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         this.mClickListener = itemClickListener;
     }
 
-    public void setMoviesImages(int[] data) {
-        mData = data;
+    public void setMoviesList(Movie[] data) {
+        mMovieList = data;
     }
 
     // parent activity will implement this method to respond to click events

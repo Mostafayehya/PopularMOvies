@@ -21,7 +21,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private TextView mErrorMessageDisplay;
     private ProgressBar mLoadingIndicator;
     private RecyclerView imageRecyclerView;
-    private MovieAdapter imageAdapter;
+    private MovieAdapter movieAdapter;
+    private static final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=c116e57a4053a96cf95605c119b5f697";
+    private static final String TOP_RATED_QUERY_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=c116e57a4053a96cf95605c119b5f697";
 
 
     //this is a comment to be able to add the file to the git
@@ -30,19 +32,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        int[] imagesDB = {R.drawable.img1, R.drawable.img2, R.drawable.img3, R.drawable.img4,
-                R.drawable.img5,
-                R.drawable.img6,
-                R.drawable.img7,
-                R.drawable.img8
 
-        };
 
         imageRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_images);
-        imageAdapter = new MovieAdapter(this, this);
-        imageAdapter.setMoviesImages(imagesDB);
+        movieAdapter = new MovieAdapter(this, this);
         imageRecyclerView.setHasFixedSize(true);
-
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
@@ -52,15 +46,21 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         } else {
             imageRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         }
-        imageRecyclerView.setAdapter(imageAdapter);
+        imageRecyclerView.setAdapter(movieAdapter);
 
+        //The default query of the movies is the most popular movies query
+        loadMoviesData(POPULAR_QUERY_URL);
+    }
+
+    void loadMoviesData(String url) {
+        new loadMovieTask().execute(url);
     }
 
     @Override
-    public void onClick(int imgResourceID) {
+    public void onClick(Movie movieToBeSentToMovieDetialsActivity) {
 
         Intent intentToStartMovieDetailsActivity = new Intent(this, MovieDetails.class);
-        intentToStartMovieDetailsActivity.putExtra("resourceId", imgResourceID);
+        intentToStartMovieDetailsActivity.putExtra("MovieObj", movieToBeSentToMovieDetialsActivity);
         startActivity(intentToStartMovieDetailsActivity);
     }
 
@@ -120,6 +120,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         @Override
         protected void onPostExecute(Movie m[]) {
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
+            if (m != null) {
+                showMoviesDataView();
+                movieAdapter.setMoviesList(m);
+            }
             super.onPostExecute(m);
         }
     }
@@ -137,13 +142,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         int id = item.getItemId();
 
+        //excute task that takes the url requesting the most popularity movies
         if (id == R.id.action_sortby_popularity) {
-            //excute task that takes the url requesting the most popularity movies
+            movieAdapter.setMoviesList(null);
+            loadMoviesData(POPULAR_QUERY_URL);
             return true;
         }
 
+        //excute task that request top rated movies
         if (id == R.id.action_sortby_rating) {
-            //excute task that request top rated movies
+            movieAdapter.setMoviesList(null);
+            loadMoviesData(TOP_RATED_QUERY_URL);
         }
 
         return super.onOptionsItemSelected(item);
