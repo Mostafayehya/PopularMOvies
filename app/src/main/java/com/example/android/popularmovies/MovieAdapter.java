@@ -86,7 +86,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     public void setMoviesList(Movie[] data) {
         System.arraycopy(data, 0, mMovieList, 0, data.length);
-        ;
+         notifyDataSetChanged();
     }
 
     // parent activity will implement this method to respond to click events

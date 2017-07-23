@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private void showMoviesDataView() {
                 /* First, make sure the error is invisible */
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+        mLoadingIndicator.setVisibility(View.INVISIBLE);
                 /* Then, make sure the weather data is visible */
         imageRecyclerView.setVisibility(View.VISIBLE);
     }
@@ -90,7 +91,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
+                imageRecyclerView.setVisibility(View.INVISIBLE);
+                mLoadingIndicator.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -120,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         @Override
         protected void onPostExecute(Movie[] m) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (m != null) {
                 showMoviesDataView();
                 movieAdapter.setMoviesList(m);
@@ -144,14 +145,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         //excute task that takes the url requesting the most popularity movies
         if (id == R.id.action_sortby_popularity) {
-            movieAdapter.setMoviesList(null);
             loadMoviesData(POPULAR_QUERY_URL);
+
             return true;
         }
 
         //excute task that request top rated movies
         if (id == R.id.action_sortby_rating) {
-            movieAdapter.setMoviesList(null);
             loadMoviesData(TOP_RATED_QUERY_URL);
         }
 
