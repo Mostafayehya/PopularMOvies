@@ -20,16 +20,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private final MovieAdapterOnClickHandler mClickHandler;
-    private static final String MOVIE_POSTER_BASE_URL  = "http://image.tmdb.org/t/p/w185/";
+    private static final String MOVIE_POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185/";
+
 
     public interface MovieAdapterOnClickHandler {
         void onClick(Movie movie);
     }
 
     // data is passed into the constructor
-    public MovieAdapter(MovieAdapterOnClickHandler clickHandler,Context context) {
+    public MovieAdapter(MovieAdapterOnClickHandler clickHandler, Context context) {
         mClickHandler = clickHandler;
         mInflater = LayoutInflater.from(context);
+        for (int i = 0; i < mMovieList.length; i++) {
+            mMovieList[i] = new Movie();
+        }
     }
 
     // inflates the cell layout from xml when needed
@@ -45,14 +49,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public void onBindViewHolder(MovieAdapter.ViewHolder holder, int position) {
         Context myContext = holder.mImageView.getContext();
         //MOVIE_POSTER_BASE_URL+mMovieList[position].imageURLRelativePath this is the complete movie image url .
-        Picasso.with(myContext).load(MOVIE_POSTER_BASE_URL+mMovieList[position].imageURLRelativePath).into(holder.mImageView);
+        Picasso.with(myContext).load(MOVIE_POSTER_BASE_URL + mMovieList[position].imageURLRelativePath).into(holder.mImageView);
         holder.mImageView.setVisibility(View.VISIBLE);
     }
 
     // total number of cells
     @Override
     public int getItemCount() {
-        return 20;
+        return mMovieList.length;
     }
 
 
@@ -68,12 +72,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
         @Override
         public void onClick(View view) {
-                int adapterPostion = getAdapterPosition();
-                 Movie movieObjectToBeSentToTheMovieDetailsActivity= mMovieList[adapterPostion];
-                mClickHandler.onClick(movieObjectToBeSentToTheMovieDetailsActivity);
-            }
+            int adapterPostion = getAdapterPosition();
+            Movie movieObjectToBeSentToTheMovieDetailsActivity = mMovieList[adapterPostion];
+            mClickHandler.onClick(movieObjectToBeSentToTheMovieDetailsActivity);
         }
-
+    }
 
 
     // allows clicks events to be caught
@@ -82,7 +85,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     }
 
     public void setMoviesList(Movie[] data) {
-        mMovieList = data;
+        System.arraycopy(data, 0, mMovieList, 0, data.length);
+        ;
     }
 
     // parent activity will implement this method to respond to click events

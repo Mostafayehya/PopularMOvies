@@ -14,14 +14,23 @@ public class Movie implements Parcelable {
     String summary;
     String year;
     String imageURLRelativePath;
+    static final String MOVIE_POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185/";
 
-    public Movie(String name, String rating, String summary, String year,  String image) {
+    public Movie() {
+        this.name = "";
+        this.rating = "";
+        this.summary = "";
+        this.year = "";
+        this.imageURLRelativePath = "";
+    }
+
+    public Movie(String name, String rating, String summary, String year, String image) {
         this.name = name;
         this.rating = rating;
         this.summary = summary;
         this.year = year;
 
-        this.imageURLRelativePath= image;
+        this.imageURLRelativePath = image;
     }
 
     private Movie(Parcel in) {
@@ -29,7 +38,7 @@ public class Movie implements Parcelable {
         rating = in.readString();
         summary = in.readString();
         year = in.readString();
-        imageURLRelativePath= in.readString();
+        imageURLRelativePath = in.readString();
     }
 
     @Override
@@ -47,7 +56,7 @@ public class Movie implements Parcelable {
         parcel.writeString(imageURLRelativePath);
     }
 
-    public final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+    public static  final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
         @Override
         public Movie createFromParcel(Parcel parcel) {
             return new Movie(parcel);
