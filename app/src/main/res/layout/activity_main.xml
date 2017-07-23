@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:text="@string/error_message"
-            android:textSize="20sp"
+            android:textSize="40sp"
             android:visibility="invisible" />
 
         <ProgressBar
