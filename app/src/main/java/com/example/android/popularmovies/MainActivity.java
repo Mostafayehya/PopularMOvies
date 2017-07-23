@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
 
         @Override
-        protected void onPostExecute(Movie m[]) {
+        protected void onPostExecute(Movie[] m) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (m != null) {
                 showMoviesDataView();

@@ -52,7 +52,7 @@ public class OpenMovieJsonUtils {
         for (int i = 0; i < moviesArray.length(); i++) {
             
             JSONObject currentObject = moviesArray.getJSONObject(i);
-
+            parsedMovies[i] = new Movie();
             parsedMovies[i].name = currentObject.getString(TITLE);
             parsedMovies[i].imageURLRelativePath = currentObject.getString(POSTER_PATH);
             parsedMovies[i].rating = currentObject.getString(RATING);

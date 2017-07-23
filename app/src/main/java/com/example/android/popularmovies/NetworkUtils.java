@@ -19,8 +19,6 @@ public final class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
 
-
-
     public static URL buildUrl(String urlQuery) {
         Uri builtUri = Uri.parse(urlQuery).buildUpon().build();
 
