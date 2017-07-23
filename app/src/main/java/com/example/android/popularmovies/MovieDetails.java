@@ -25,7 +25,6 @@ public class MovieDetails extends AppCompatActivity {
         Movie thisMovie = new Movie();
         movieName = (TextView) findViewById(R.id.movie_name);
         releaseDate = (TextView) findViewById(R.id.release_date);
-        duration = (TextView) findViewById(R.id.duration);
         rating = (TextView) findViewById(R.id.rating);
         summary = (TextView) findViewById(R.id.movie_summary);
         thumbnail = (ImageView) findViewById(R.id.movie_thumbnail);
