@@ -78,12 +78,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         }
     }
 
-
-    // allows clicks events to be caught
-    public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
     public void setMoviesList(Movie[] data) {
         System.arraycopy(data, 0, mMovieList, 0, data.length);
          notifyDataSetChanged();

@@ -1,7 +1,10 @@
 package com.example.android.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -91,8 +94,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+
+            if(isOnline()) {
                 imageRecyclerView.setVisibility(View.INVISIBLE);
                 mLoadingIndicator.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                showErrorMessage();
+            }
         }
 
         @Override
@@ -128,6 +138,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             }
             super.onPostExecute(m);
         }
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     @Override

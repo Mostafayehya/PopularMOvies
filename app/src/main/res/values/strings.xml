@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">PopularMOvies</string>
     <dimen name="layout_margin_left">30dp</dimen>
+    <dimen name="layout_margin_right">10dp</dimen>
     <dimen name="text_size_details">20dp</dimen>
     <dimen name="text_size_summary">20dp</dimen>
     <string name="sort_by_popularity">Most Popular</string>
     <string name="sort_by_rating">Top-Rated</string>
-    <string name="error_message">couldn\'t fetch data</string>
+    <string name="error_message">couldn\'t fetch data !! check your internet connection</string>
+    <string name="favourite_button_text">MARK AS FAVOURITE</string>
 </resources>
