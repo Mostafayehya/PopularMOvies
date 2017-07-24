@@ -27,8 +27,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private RecyclerView imageRecyclerView;
     private MovieAdapter movieAdapter;
     Movie[] arrayOfMovies = new Movie[20];
-    private static final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=";
-    private static final String TOP_RATED_QUERY_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
     ArrayList<Movie> movieList = new ArrayList<>();
 
 
