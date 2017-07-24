@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
@@ -25,17 +26,26 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private ProgressBar mLoadingIndicator;
     private RecyclerView imageRecyclerView;
     private MovieAdapter movieAdapter;
+    Movie[] arrayOfMovies = new Movie[20];
     private static final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=c116e57a4053a96cf95605c119b5f697";
     private static final String TOP_RATED_QUERY_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=c116e57a4053a96cf95605c119b5f697";
+    ArrayList<Movie> movieList = new ArrayList<>();
 
 
     //this is a comment to be able to add the file to the git
 
+    public void initializeArrayOfMovies() {
+        for (int i = 0; i < 20; i++) {
+            arrayOfMovies[i] = new Movie();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+
+        setContentView(R.layout.activity_main);
 
         imageRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_images);
         movieAdapter = new MovieAdapter(this, this);
@@ -51,8 +61,24 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
         imageRecyclerView.setAdapter(movieAdapter);
 
-        //The default query of the movies is the most popular movies query
         loadMoviesData(POPULAR_QUERY_URL);
+        //The default query of the movies is the most popular movies query
+
+        if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+            loadMoviesData(POPULAR_QUERY_URL);
+        } else {
+//            movieList = new ArrayList<>();
+//            initializeArrayOfMovies();
+            movieList = savedInstanceState.getParcelableArrayList("movies");
+
+            arrayOfMovies = movieList.toArray(arrayOfMovies);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("movies", movieList);
+        super.onSaveInstanceState(outState);
     }
 
     void loadMoviesData(String url) {
@@ -95,12 +121,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         protected void onPreExecute() {
             super.onPreExecute();
 
-            if(isOnline()) {
+            if (isOnline()) {
                 imageRecyclerView.setVisibility(View.INVISIBLE);
                 mLoadingIndicator.setVisibility(View.VISIBLE);
-            }
-            else
-            {
+            } else {
                 showErrorMessage();
             }
         }
@@ -119,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 String jsonMovieResponse = NetworkUtils
                         .getResponseFromHttpUrl(movieRequestUrl);
 
-                Movie[] arrayOfMovies = OpenMovieJsonUtils
+                arrayOfMovies = OpenMovieJsonUtils
                         .getArrayOfMoviesFromJson(MainActivity.this, jsonMovieResponse);
 
                 return arrayOfMovies;
