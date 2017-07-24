@@ -12,28 +12,6 @@ import org.json.JSONObject;
 
 public class OpenMovieJsonUtils {
 
-    //"results"
-//        "vote_count": 623,
-//                "id": 324852,
-//                "video": false,
-//                "vote_average": 6.2,
-//                "title": "Despicable Me 3",
-//                "popularity": 307.527553,
-//                "poster_path": "\/5qcUGqWoWhEsoQwNUrtf3y3fcWn.jpg",
-//                "original_language": "en",
-//                "original_title": "Despicable Me 3",
-//                "genre_ids": [
-//        878,
-//                12,
-//                16,
-//                35,
-//                10751
-//      ],
-//        "backdrop_path": "\/puV2PFq42VQPItaygizgag8jrXa.jpg",
-//                "adult": false,
-//                "overview": "Gru and his wife Lucy must stop former '80s child star Balthazar Bratt from achieving world domination.",
-//                "release_date": "2017-06-29"
-
     static final String TITLE = "title";
     static final String POSTER_PATH = "poster_path";
     static final String RATING = "vote_average";
