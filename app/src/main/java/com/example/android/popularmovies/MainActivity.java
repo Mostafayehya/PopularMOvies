@@ -29,8 +29,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     Movie[] arrayOfMovies = new Movie[20];
     ArrayList<Movie> movieList = new ArrayList<>();
 
+    private  final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=";
+    private  final String TOP_RATED_QUERY_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
 
-    //this is a comment to be able to add the file to the git
 
     public void initializeArrayOfMovies() {
         for (int i = 0; i < 20; i++) {
@@ -65,8 +66,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
             loadMoviesData(POPULAR_QUERY_URL);
         } else {
-//            movieList = new ArrayList<>();
-//            initializeArrayOfMovies();
+
             movieList = savedInstanceState.getParcelableArrayList("movies");
 
             arrayOfMovies = movieList.toArray(arrayOfMovies);

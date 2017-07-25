@@ -72,19 +72,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
         @Override
         public void onClick(View view) {
-            int adapterPostion = getAdapterPosition();
-            Movie movieObjectToBeSentToTheMovieDetailsActivity = mMovieList[adapterPostion];
+            int adapterPosition = getAdapterPosition();
+            Movie movieObjectToBeSentToTheMovieDetailsActivity = mMovieList[adapterPosition];
             mClickHandler.onClick(movieObjectToBeSentToTheMovieDetailsActivity);
         }
     }
 
-    public void setMoviesList(Movie[] data) {
+   void setMoviesList(Movie[] data) {
         System.arraycopy(data, 0, mMovieList, 0, data.length);
-         notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
+    private interface ItemClickListener {
         void onItemClick(View view, int position);
     }
 

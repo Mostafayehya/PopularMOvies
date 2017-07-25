@@ -9,13 +9,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 public class MovieDetails extends AppCompatActivity {
-    private TextView movieName;
-    private TextView releaseDate;
-    private TextView duration;
-    private TextView rating;
-    private TextView summary;
-    private ImageView thumbnail;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,17 +16,17 @@ public class MovieDetails extends AppCompatActivity {
 
         Bundle recievedBundle;
         Movie thisMovie = new Movie();
-        movieName = (TextView) findViewById(R.id.movie_name);
-        releaseDate = (TextView) findViewById(R.id.release_date);
-        rating = (TextView) findViewById(R.id.rating);
-        summary = (TextView) findViewById(R.id.movie_summary);
-        thumbnail = (ImageView) findViewById(R.id.movie_thumbnail);
+        TextView movieName = (TextView) findViewById(R.id.movie_name);
+        TextView releaseDate = (TextView) findViewById(R.id.release_date);
+        TextView rating = (TextView) findViewById(R.id.rating);
+        TextView summary = (TextView) findViewById(R.id.movie_summary);
+        ImageView thumbnail = (ImageView) findViewById(R.id.movie_thumbnail);
 
         Intent intentThatStartedThisActivity = getIntent();
 
         if (intentThatStartedThisActivity != null) {
             if (intentThatStartedThisActivity.hasExtra("MovieObj")) {
-           recievedBundle = intentThatStartedThisActivity.getExtras();
+                recievedBundle = intentThatStartedThisActivity.getExtras();
                 thisMovie = recievedBundle.getParcelable("MovieObj");
             }
         }

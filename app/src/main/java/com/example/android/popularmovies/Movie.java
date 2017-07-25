@@ -14,7 +14,7 @@ public class Movie implements Parcelable {
     String summary;
     String year;
     String imageURLRelativePath;
-    static final String MOVIE_POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185/";
+     final String MOVIE_POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185/";
 
     public Movie() {
         this.name = "";
