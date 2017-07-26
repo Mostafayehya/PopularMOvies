@@ -26,24 +26,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private ProgressBar mLoadingIndicator;
     private RecyclerView imageRecyclerView;
     private MovieAdapter movieAdapter;
-    Movie[] arrayOfMovies = new Movie[20];
-    ArrayList<Movie> movieList = new ArrayList<>();
+    ArrayList<Movie> movieList = new ArrayList<>(20);
 
     private final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=";
     private final String TOP_RATED_QUERY_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
-
-
-    public void copyFromArrayToArrayList(ArrayList<Movie> list, Movie[] array) {
-        list.clear();
-        for (int i = 0; i < 20; i++) {
-            list.add(i, array[i]);
-        }
-    }
-
-    public void initializeMovieArray() {
-        for (int i = 0; i < 20; i++)
-            arrayOfMovies[i] = new Movie();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         imageRecyclerView.setHasFixedSize(true);
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-        initializeMovieArray();
 
         //this part to handle the orientation of the device and adjusting the GridLayoutManger accordingly
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -70,13 +55,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         //The default query of the movies is the most popular movies query
         //  loadMoviesData(POPULAR_QUERY_URL);
 
+        if(!isOnline()){
+            showErrorMessage();
+        }
+
         if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
             loadMoviesData(POPULAR_QUERY_URL);
         } else {
 
             movieList = savedInstanceState.getParcelableArrayList("movies");
-            arrayOfMovies = movieList.toArray(arrayOfMovies);
-            movieAdapter.setMoviesList(arrayOfMovies);
+            movieAdapter.setMoviesList(movieList);
         }
     }
 
@@ -121,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
 
-    class loadMovieTask extends AsyncTask<String, Void, Movie[]> {
+    class loadMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -135,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
 
         @Override
-        protected Movie[] doInBackground(String... params) {
+        protected ArrayList<Movie> doInBackground(String... params) {
   /* If there's no urls , there's nothing to look up. */
             if (params.length == 0) {
                 return null;
@@ -148,11 +136,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 String jsonMovieResponse = NetworkUtils
                         .getResponseFromHttpUrl(movieRequestUrl);
 
-                arrayOfMovies = OpenMovieJsonUtils
-                        .getArrayOfMoviesFromJson(MainActivity.this, jsonMovieResponse);
+                movieList.clear();
+                movieList.addAll(OpenMovieJsonUtils
+                        .getArrayListOfMoviesFromJson(MainActivity.this, jsonMovieResponse));
 
-                copyFromArrayToArrayList(movieList, arrayOfMovies);
-                return arrayOfMovies;
+                return movieList;
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -161,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
 
         @Override
-        protected void onPostExecute(Movie[] m) {
+        protected void onPostExecute(ArrayList<Movie> m) {
             if (m != null) {
                 showMoviesDataView();
                 movieAdapter.setMoviesList(m);
