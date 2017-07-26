@@ -29,13 +29,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     Movie[] arrayOfMovies = new Movie[20];
     ArrayList<Movie> movieList = new ArrayList<>();
 
-    private  final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=";
-    private  final String TOP_RATED_QUERY_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
+    private final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=";
+    private final String TOP_RATED_QUERY_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
 
 
-    public void initializeArrayOfMovies() {
+    public void copyFromArrayToArrayList(ArrayList<Movie> list, Movie[] array) {
+        list.clear();
         for (int i = 0; i < 20; i++) {
-            arrayOfMovies[i] = new Movie();
+            list.add(i, array[i]);
         }
     }
 
@@ -60,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
         imageRecyclerView.setAdapter(movieAdapter);
 
-        loadMoviesData(POPULAR_QUERY_URL);
         //The default query of the movies is the most popular movies query
+        loadMoviesData(POPULAR_QUERY_URL);
 
         if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
             loadMoviesData(POPULAR_QUERY_URL);
@@ -144,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 arrayOfMovies = OpenMovieJsonUtils
                         .getArrayOfMoviesFromJson(MainActivity.this, jsonMovieResponse);
 
+                copyFromArrayToArrayList(movieList, arrayOfMovies);
                 return arrayOfMovies;
 
             } catch (Exception e) {
