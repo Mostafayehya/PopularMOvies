@@ -28,7 +28,7 @@ public class OpenMovieJsonUtils {
         Movie[] parsedMovies = new Movie[moviesArray.length()];
 
         for (int i = 0; i < moviesArray.length(); i++) {
-            
+
             JSONObject currentObject = moviesArray.getJSONObject(i);
             parsedMovies[i] = new Movie();
             parsedMovies[i].name = currentObject.getString(TITLE);

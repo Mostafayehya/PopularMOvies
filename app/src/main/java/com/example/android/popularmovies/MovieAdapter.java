@@ -49,7 +49,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public void onBindViewHolder(MovieAdapter.ViewHolder holder, int position) {
         Context myContext = holder.mImageView.getContext();
         //MOVIE_POSTER_BASE_URL+mMovieList[position].imageURLRelativePath this is the complete movie image url .
-        Picasso.with(myContext).load(MOVIE_POSTER_BASE_URL + mMovieList[position].imageURLRelativePath).into(holder.mImageView);
+
+            Picasso.with(myContext).load(MOVIE_POSTER_BASE_URL + mMovieList[position].imageURLRelativePath).into(holder.mImageView);
+
         holder.mImageView.setVisibility(View.VISIBLE);
     }
 
@@ -78,7 +80,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         }
     }
 
-   void setMoviesList(Movie[] data) {
+    void setMoviesList(Movie[] data) {
         System.arraycopy(data, 0, mMovieList, 0, data.length);
         notifyDataSetChanged();
     }

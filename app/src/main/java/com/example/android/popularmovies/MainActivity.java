@@ -40,6 +40,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
+    public void initializeMovieArray() {
+        for (int i = 0; i < 20; i++)
+            arrayOfMovies[i] = new Movie();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         imageRecyclerView.setHasFixedSize(true);
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+        initializeMovieArray();
 
         //this part to handle the orientation of the device and adjusting the GridLayoutManger accordingly
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -62,15 +68,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         imageRecyclerView.setAdapter(movieAdapter);
 
         //The default query of the movies is the most popular movies query
-        loadMoviesData(POPULAR_QUERY_URL);
+        //  loadMoviesData(POPULAR_QUERY_URL);
 
         if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
             loadMoviesData(POPULAR_QUERY_URL);
         } else {
 
             movieList = savedInstanceState.getParcelableArrayList("movies");
-
             arrayOfMovies = movieList.toArray(arrayOfMovies);
+            movieAdapter.setMoviesList(arrayOfMovies);
         }
     }
 
