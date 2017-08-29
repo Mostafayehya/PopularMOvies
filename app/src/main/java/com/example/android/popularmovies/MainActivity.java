@@ -28,8 +28,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private MovieAdapter movieAdapter;
     ArrayList<Movie> movieList = new ArrayList<>(20);
 
-    private final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=";
-    private final String TOP_RATED_QUERY_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
+    private final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=c116e57a4053a96cf95605c119b5f697";
+    private final String TOP_RATED_QUERY_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=c116e57a4053a96cf95605c119b5f697";
+    /*url to fetch movie trailers
+    https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=<<api_key>>&language=en-US
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             }
         }
 
+        /*params is the the paramaters sent to this function by execute() method */
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
   /* If there's no urls , there's nothing to look up. */

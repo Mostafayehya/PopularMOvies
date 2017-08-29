@@ -7,4 +7,6 @@
     <string name="sort_by_rating">Top-Rated</string>
     <string name="error_message">couldn\'t fetch data !! check your internet connection</string>
     <string name="favourite_button_text">MARK AS FAVOURITE</string>
+    <string name="Trailers_title">Trailers:</string>
+    <string name="Word_Trailer">Trailer</string>
 </resources>

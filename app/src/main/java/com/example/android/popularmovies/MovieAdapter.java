@@ -29,6 +29,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         void onClick(Movie movie);
     }
 
+    // parent activity will implement this method to respond to click events
+    private interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
     // data is passed into the constructor
     public MovieAdapter(MovieAdapterOnClickHandler clickHandler, Context context) {
         mClickHandler = clickHandler;
@@ -86,10 +91,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    // parent activity will implement this method to respond to click events
-    private interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
+
 
 
 }
