@@ -30,8 +30,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=c116e57a4053a96cf95605c119b5f697";
     private final String TOP_RATED_QUERY_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=c116e57a4053a96cf95605c119b5f697";
-    /*url to fetch movie trailers
-    https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=<<api_key>>&language=en-US
+    /*  url to fetch movie trailers
+        https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=<<api_key>>&language=en-US
+         https://api.themoviedb.org/3/movie/{id}/reviews?api_key=c116e57a4053a96cf95605c119b5f697
+
+
+
     */
 
     @Override

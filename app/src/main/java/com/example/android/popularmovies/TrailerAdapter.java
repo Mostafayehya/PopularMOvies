@@ -81,7 +81,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
 
     //called by : post execute of fetchTrailersTask
     //updates the current list when viewing a different movie
-    void setMoviesList(ArrayList<String> data) {
+    void setTrailersList(ArrayList<String> data) {
         mTrailersList.clear();
         mTrailersList.addAll(data);
         notifyDataSetChanged();
