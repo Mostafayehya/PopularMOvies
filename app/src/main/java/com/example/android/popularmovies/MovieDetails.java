@@ -36,7 +36,7 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     TextView releaseDate;
     TextView mErrorMessage;
     ArrayList<String> trailersList = new ArrayList<>();
-    ArrayList<String> reviewsList = new ArrayList<>(5);
+    ArrayList<String> reviewsList = new ArrayList<>();
     TrailerAdapter trailerAdapter;
     TextView reviewsTextView;
     ArrayAdapter<String> reviewAdatper;
@@ -97,8 +97,8 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         //https://api.themoviedb.org/3/movie/{id}/reviews?api_key=c116e57a4053a96cf95605c119b5f697
 
         // TODO (1) plug in your API key
-        movieTrailersURL = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=c116e57a4053a96cf95605c119b5f697&language=en-US";
-        movieReviewsURL = "https://api.themoviedb.org/3/movie/" + movieId + "/reviews?api_key=c116e57a4053a96cf95605c119b5f697&language=en-US";
+        movieTrailersURL = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=&language=en-US";
+        movieReviewsURL = "https://api.themoviedb.org/3/movie/" + movieId + "/reviews?api_key=&language=en-US";
 
         if (savedInstanceState == null || !savedInstanceState.containsKey("Trailers") || !savedInstanceState.containsKey("Reviews")) {
             loadTrailersAndReviewsData(movieTrailersURL, movieReviewsURL);
@@ -107,6 +107,7 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
             trailersList = savedInstanceState.getStringArrayList("Trailers");
             reviewsList = savedInstanceState.getStringArrayList("Reviews");
             trailerAdapter.setTrailersList(trailersList);
+            writeReviewsToTextView(reviewsList);
         }
 
 
@@ -197,11 +198,8 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
                 trailerAdapter.setTrailersList(trailersList);
                 //ListView for the Reviews
 
-                for(int i=0 ; i<reviewsList.size();i++){
-                    String review = reviewsList.get(i);
-                    reviewsTextView.append(review);
-                    reviewsTextView.append("\n----------------------------------------\n");
-                }
+                writeReviewsToTextView(reviewsList);
+
             }
             super.onPostExecute(trailersList);
         }
@@ -213,6 +211,14 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    public void writeReviewsToTextView(ArrayList<String> reviews){
+        for(int i=0 ; i<reviews.size();i++){
+            String review = reviews.get(i);
+            reviewsTextView.append(review);
+            reviewsTextView.append("\n----------------------------------------\n");
+        }
     }
 
     @Override
