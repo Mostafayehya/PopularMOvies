@@ -154,7 +154,6 @@
             android:layout_marginRight="@dimen/layout_margin_left"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:text="i'm reviewslkhhhhhhhhhhhhhhhhhhhhhhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
             android:layout_height="wrap_content" />
 
     </LinearLayout>

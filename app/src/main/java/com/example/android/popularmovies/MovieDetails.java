@@ -36,9 +36,9 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     TextView releaseDate;
     TextView mErrorMessage;
     ArrayList<String> trailersList = new ArrayList<>();
-    ArrayList<String> mReviewsList = new ArrayList<>(5);
     ArrayList<String> reviewsList = new ArrayList<>(5);
     TrailerAdapter trailerAdapter;
+    TextView reviewsTextView;
     ArrayAdapter<String> reviewAdatper;
     LinearLayoutManager rvManager;
     int movieId;
@@ -67,9 +67,7 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         mErrorMessage = (TextView) findViewById(R.id.tv_error_message_display_details);
 
 
-        TextView reviewsTextView = (TextView) findViewById(R.id.reviews_text_view);
-        String review = mReviewsList.get(1);
-        reviewsTextView.setText(review);
+        reviewsTextView = (TextView) findViewById(R.id.reviews_text_view);
 
 
         thisMovie = new Movie();
@@ -99,15 +97,15 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         //https://api.themoviedb.org/3/movie/{id}/reviews?api_key=c116e57a4053a96cf95605c119b5f697
 
         // TODO (1) plug in your API key
-        movieTrailersURL = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=&language=en-US";
-        movieReviewsURL = "https://api.themoviedb.org/3/movie/" + movieId + "/reviews?api_key=&language=en-US";
+        movieTrailersURL = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=c116e57a4053a96cf95605c119b5f697&language=en-US";
+        movieReviewsURL = "https://api.themoviedb.org/3/movie/" + movieId + "/reviews?api_key=c116e57a4053a96cf95605c119b5f697&language=en-US";
 
         if (savedInstanceState == null || !savedInstanceState.containsKey("Trailers") || !savedInstanceState.containsKey("Reviews")) {
             loadTrailersAndReviewsData(movieTrailersURL, movieReviewsURL);
         } else {
 
             trailersList = savedInstanceState.getStringArrayList("Trailers");
-            mReviewsList = savedInstanceState.getStringArrayList("Reviews");
+            reviewsList = savedInstanceState.getStringArrayList("Reviews");
             trailerAdapter.setTrailersList(trailersList);
         }
 
@@ -117,7 +115,7 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putStringArrayList("Trailers", trailersList);
-        outState.putStringArrayList("Reviews", mReviewsList);
+        outState.putStringArrayList("Reviews", reviewsList);
         super.onSaveInstanceState(outState);
     }
 
@@ -198,8 +196,12 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
                 //Recycler View for the trailers
                 trailerAdapter.setTrailersList(trailersList);
                 //ListView for the Reviews
-                mReviewsList.clear();
-                mReviewsList.addAll(reviewsList);
+
+                for(int i=0 ; i<reviewsList.size();i++){
+                    String review = reviewsList.get(i);
+                    reviewsTextView.append(review);
+                    reviewsTextView.append("\n----------------------------------------\n");
+                }
             }
             super.onPostExecute(trailersList);
         }
