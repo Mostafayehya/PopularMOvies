@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -36,10 +35,10 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     Bundle recievedBundle;
     TextView releaseDate;
     TextView mErrorMessage;
-    ArrayList<String> trailersList;
-    ArrayList<String> reviewsList;
+    ArrayList<String> trailersList = new ArrayList<>();
+    ArrayList<String> mReviewsList = new ArrayList<>();
+    ArrayList<String> reviewsList = new ArrayList<String>();
     TrailerAdapter trailerAdapter;
-    ListView reviewsListView;
     ArrayAdapter<String> reviewAdatper;
     LinearLayoutManager rvManager;
     int movieId;
@@ -49,23 +48,34 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
 
-        thisMovie = new Movie();
-        trailerAdapter = new TrailerAdapter(this, this);
         movieName = (TextView) findViewById(R.id.movie_name);
         releaseDate = (TextView) findViewById(R.id.release_date);
         rating = (TextView) findViewById(R.id.rating);
-        mLoadingBar = (ProgressBar) findViewById(R.id.pb_loading_indicator_details);
+
+
         summary = (TextView) findViewById(R.id.movie_summary);
         thumbnail = (ImageView) findViewById(R.id.movie_thumbnail);
-        mErrorMessage = (TextView) findViewById(R.id.tv_error_message_display_details);
 
-        reviewsListView = (ListView) findViewById(R.id.reviews_item_list);
-        reviewAdatper = new ArrayAdapter<>(this, R.layout.review_item, reviewsList);
-        reviewsListView.setAdapter(reviewAdatper);
 
         trailersRecyclerView = (RecyclerView) findViewById(R.id.trailer_rv);
-//        rvManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        trailersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        trailerAdapter = new TrailerAdapter(this, this);
+        trailersRecyclerView.setAdapter(trailerAdapter);
+        trailersRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+
+
+        mLoadingBar = (ProgressBar) findViewById(R.id.pb_loading_indicator_details);
+        mErrorMessage = (TextView) findViewById(R.id.tv_error_message_display_details);
+
+
+        TextView reviewsTextView = (TextView) findViewById(R.id.reviews_text_view);
+
+        for(int i=0 ; i<mReviewsList.size();i++){
+            reviewsTextView.setText(mReviewsList.get(i));
+        }
+
+
+
+        thisMovie = new Movie();
 
         Intent intentThatStartedThisActivity = getIntent();
 
@@ -91,6 +101,7 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
 
         //https://api.themoviedb.org/3/movie/{id}/reviews?api_key=c116e57a4053a96cf95605c119b5f697
 
+        // TODO (1) plug in your API key
         movieTrailersURL = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=&language=en-US";
         movieReviewsURL = "https://api.themoviedb.org/3/movie/" + movieId + "/reviews?api_key=&language=en-US";
 
@@ -99,16 +110,17 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         } else {
 
             trailersList = savedInstanceState.getStringArrayList("Trailers");
-            reviewsList= savedInstanceState.getStringArrayList("Reviews");
+            mReviewsList = savedInstanceState.getStringArrayList("Reviews");
             trailerAdapter.setTrailersList(trailersList);
         }
+
 
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putStringArrayList("Trailers", trailersList);
-        outState.putStringArrayList("Reviews", reviewsList);
+        outState.putStringArrayList("Reviews", mReviewsList);
         super.onSaveInstanceState(outState);
     }
 
@@ -129,11 +141,14 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
                 /* First, make sure the error is invisible */
         mErrorMessage.setVisibility(View.INVISIBLE);
         mLoadingBar.setVisibility(View.INVISIBLE);
+        trailersRecyclerView.setVisibility(View.VISIBLE);
+
                 /* Then, make sure the weather data is visible */
     }
 
 
     class FetchTrailersAndReviewsTask extends AsyncTask<String, Void, ArrayList<String>> {
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -170,6 +185,8 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
                 reviewsList.addAll(OpenMovieJsonUtils
                         .getArrayListOfReviewsFromJson(MovieDetails.this, jsonReviewsResponse));
 
+
+
                 return trailersList;
 
             } catch (Exception e) {
@@ -185,6 +202,8 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
                 //Recycler View for the trailers
                 trailerAdapter.setTrailersList(trailersList);
                 //ListView for the Reviews
+                mReviewsList.clear();
+                mReviewsList.addAll(reviewsList);
             }
             super.onPostExecute(trailersList);
         }

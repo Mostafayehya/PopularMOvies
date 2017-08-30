@@ -61,6 +61,7 @@ public class OpenMovieJsonUtils {
 
             JSONObject currentObject = trailersArray.getJSONObject(i);
             String key;
+            String trailerName;
             key = currentObject.getString("key");
 
             parsedTrailersKeys.add(key);
@@ -72,20 +73,20 @@ public class OpenMovieJsonUtils {
 
 
         JSONObject jsonReponse = new JSONObject(jsonReviewsResponse);
-        JSONArray trailersArray = jsonReponse.getJSONArray("results");
+        JSONArray reviewsArray = jsonReponse.getJSONArray("results");
 
         ArrayList<String> parsedReviews = new ArrayList<>();
 
-        for (int i = 0; i < trailersArray.length(); i++) {
+        for (int i = 0; i < reviewsArray.length(); i++) {
 
-            JSONObject currentObject = trailersArray.getJSONObject(i);
+            JSONObject currentObject = reviewsArray.getJSONObject(i);
             String author;
             String content;
             String review;
             author = currentObject.getString("author");
             content = currentObject.getString("content");
 
-            review = author + " " + "said \"" + content + "\"";
+            review = author + " " + "said " + "\n\"" + content + "\"";
 
             parsedReviews.add(review);
         }

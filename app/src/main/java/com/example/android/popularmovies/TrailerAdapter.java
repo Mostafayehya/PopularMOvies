@@ -34,6 +34,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
 
         mClickHandler = onClickHandler;
         mInflater = LayoutInflater.from(context);
+        mTrailersList = new ArrayList<>(5);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
         Context myContext = holder.mImageView.getContext();
         holder.mImageView.setImageResource(R.drawable.ic_play_black_36dp);
         holder.mTextView.setText(R.string.Word_Trailer);
-        holder.mTextView.append(Integer.toString(position));
+        holder.mTextView.append(" "+Integer.toString(position+1));
         holder.mImageView.setVisibility(View.VISIBLE);
 
     }

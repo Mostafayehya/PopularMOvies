@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private MovieAdapter movieAdapter;
     ArrayList<Movie> movieList = new ArrayList<>(20);
 
+    // TODO (1) plug in your API key
     private final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=";
     private final String TOP_RATED_QUERY_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
 

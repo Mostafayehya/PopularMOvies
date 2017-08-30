@@ -98,20 +98,20 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/layout_margin_left"
             android:layout_marginTop="10dp"
-            android:text="@string/Trailers_title"
+            android:text="@string/Trailers_word"
             android:textSize="20sp" />
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/trailer_rv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="35dp"
                 android:layout_marginTop="15dp">
-
+            </android.support.v7.widget.RecyclerView>
                 <TextView
                     android:id="@+id/tv_error_message_display_details"
                     android:layout_width="wrap_content"
@@ -128,7 +128,7 @@
                     android:layout_gravity="center"
                     android:visibility="invisible" />
 
-            </android.support.v7.widget.RecyclerView>
+
         </FrameLayout>
 
         <LinearLayout
@@ -139,16 +139,23 @@
             android:layout_marginTop="10dp"
             android:background="#000000"
             android:paddingTop="10dp" />
+        <TextView
+            android:id="@+id/reviews_word"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/layout_margin_left"
+            android:layout_marginTop="10dp"
+            android:text="@string/Reviews_word"
+            android:textSize="20sp"/>
 
-        <ListView
-            android:id="@+id/reviews_item_list"
+        <TextView
+            android:id="@+id/reviews_text_view"
             android:layout_marginLeft="@dimen/layout_margin_left"
             android:layout_marginRight="@dimen/layout_margin_left"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </ListView>
+            android:text="i'm reviewslkhhhhhhhhhhhhhhhhhhhhhhmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
