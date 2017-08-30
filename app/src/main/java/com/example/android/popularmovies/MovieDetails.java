@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -34,6 +36,8 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     ArrayList<String> trailersList;
     ArrayList<String> reviewsList;
     TrailerAdapter trailerAdapter;
+    ListView reviewsListView;
+    ArrayAdapter<String> reviewAdatper ;
     int movieId;
 
     @Override
@@ -50,7 +54,12 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         summary = (TextView) findViewById(R.id.movie_summary);
         thumbnail = (ImageView) findViewById(R.id.movie_thumbnail);
         mErrorMessage = (TextView) findViewById(R.id.tv_error_message_display_details);
+        reviewsListView =(ListView) findViewById(R.id.reviews_item_list);
 
+
+
+        reviewAdatper = new ArrayAdapter<>(this,R.layout.review_item,reviewsList);
+        reviewsListView.setAdapter(reviewAdatper);
         trailersRecyclerView = (RecyclerView) findViewById(R.id.trailer_rv);
         Intent intentThatStartedThisActivity = getIntent();
 
@@ -136,7 +145,6 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
                 //Recycler View for the trailers
                 trailerAdapter.setTrailersList(trailersList);
                 //ListView for the Reviews
-
             }
             super.onPostExecute(trailersList);
         }
