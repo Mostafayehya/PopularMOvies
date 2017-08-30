@@ -36,8 +36,8 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     TextView releaseDate;
     TextView mErrorMessage;
     ArrayList<String> trailersList = new ArrayList<>();
-    ArrayList<String> mReviewsList = new ArrayList<>();
-    ArrayList<String> reviewsList = new ArrayList<String>();
+    ArrayList<String> mReviewsList = new ArrayList<>(5);
+    ArrayList<String> reviewsList = new ArrayList<>(5);
     TrailerAdapter trailerAdapter;
     ArrayAdapter<String> reviewAdatper;
     LinearLayoutManager rvManager;
@@ -60,7 +60,7 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         trailersRecyclerView = (RecyclerView) findViewById(R.id.trailer_rv);
         trailerAdapter = new TrailerAdapter(this, this);
         trailersRecyclerView.setAdapter(trailerAdapter);
-        trailersRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        trailersRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
 
         mLoadingBar = (ProgressBar) findViewById(R.id.pb_loading_indicator_details);
@@ -68,11 +68,8 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
 
 
         TextView reviewsTextView = (TextView) findViewById(R.id.reviews_text_view);
-
-        for(int i=0 ; i<mReviewsList.size();i++){
-            reviewsTextView.setText(mReviewsList.get(i));
-        }
-
+        String review = mReviewsList.get(1);
+        reviewsTextView.setText(review);
 
 
         thisMovie = new Movie();
@@ -186,7 +183,6 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
                         .getArrayListOfReviewsFromJson(MovieDetails.this, jsonReviewsResponse));
 
 
-
                 return trailersList;
 
             } catch (Exception e) {
@@ -224,7 +220,7 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
 
     }
 
-    public void playVideo(String key){
+    public void playVideo(String key) {
 
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + key));
 
