@@ -74,8 +74,8 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
             //should extract the url from the movie object and send it to the detailedActivity
             //to fire an intent to launch youtube .
             int adapterPosition = getAdapterPosition();
-            String urlStringToBeSentToDetailsActivity = mTrailersList.get(adapterPosition);
-            mClickHandler.onClick(urlStringToBeSentToDetailsActivity);
+            String trailerKey = mTrailersList.get(adapterPosition);
+            mClickHandler.onClick(trailerKey);
         }
     }
 

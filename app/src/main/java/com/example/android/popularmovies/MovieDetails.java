@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,7 +26,8 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
 
     RecyclerView trailersRecyclerView;
     ProgressBar mLoadingBar;
-    String movieTrailersURL;
+    private String movieTrailersURL;
+    private String movieReviewsURL;
     ImageView thumbnail;
     TextView summary;
     TextView rating;
@@ -37,7 +40,8 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     ArrayList<String> reviewsList;
     TrailerAdapter trailerAdapter;
     ListView reviewsListView;
-    ArrayAdapter<String> reviewAdatper ;
+    ArrayAdapter<String> reviewAdatper;
+    LinearLayoutManager rvManager;
     int movieId;
 
     @Override
@@ -54,13 +58,15 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         summary = (TextView) findViewById(R.id.movie_summary);
         thumbnail = (ImageView) findViewById(R.id.movie_thumbnail);
         mErrorMessage = (TextView) findViewById(R.id.tv_error_message_display_details);
-        reviewsListView =(ListView) findViewById(R.id.reviews_item_list);
 
-
-
-        reviewAdatper = new ArrayAdapter<>(this,R.layout.review_item,reviewsList);
+        reviewsListView = (ListView) findViewById(R.id.reviews_item_list);
+        reviewAdatper = new ArrayAdapter<>(this, R.layout.review_item, reviewsList);
         reviewsListView.setAdapter(reviewAdatper);
+
         trailersRecyclerView = (RecyclerView) findViewById(R.id.trailer_rv);
+//        rvManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        trailersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         Intent intentThatStartedThisActivity = getIntent();
 
         if (intentThatStartedThisActivity != null) {
@@ -74,7 +80,41 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         releaseDate.setText(thisMovie.year);
         rating.setText(thisMovie.rating);
         summary.setText(thisMovie.summary);
+        movieId = thisMovie.id;
         Picasso.with(this).load(thisMovie.MOVIE_POSTER_BASE_URL + thisMovie.imageURLRelativePath).into(thumbnail);
+
+
+        if (!isOnline()) {
+            showErrorMessage();
+        }
+
+
+        //https://api.themoviedb.org/3/movie/{id}/reviews?api_key=c116e57a4053a96cf95605c119b5f697
+
+        movieTrailersURL = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=&language=en-US";
+        movieReviewsURL = "https://api.themoviedb.org/3/movie/" + movieId + "/reviews?api_key=&language=en-US";
+
+        if (savedInstanceState == null || !savedInstanceState.containsKey("Trailers") || !savedInstanceState.containsKey("Reviews")) {
+            loadTrailersAndReviewsData(movieTrailersURL, movieReviewsURL);
+        } else {
+
+            trailersList = savedInstanceState.getStringArrayList("Trailers");
+            reviewsList= savedInstanceState.getStringArrayList("Reviews");
+            trailerAdapter.setTrailersList(trailersList);
+        }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putStringArrayList("Trailers", trailersList);
+        outState.putStringArrayList("Reviews", reviewsList);
+        super.onSaveInstanceState(outState);
+    }
+
+
+    void loadTrailersAndReviewsData(String trailerURL, String reviewsURL) {
+        new FetchTrailersAndReviewsTask().execute(trailerURL, reviewsURL);
     }
 
 
@@ -93,7 +133,7 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     }
 
 
-    class loadMovieTrailers extends AsyncTask<String, Void, ArrayList<String>> {
+    class FetchTrailersAndReviewsTask extends AsyncTask<String, Void, ArrayList<String>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -159,7 +199,23 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     }
 
     @Override
-    public void onClick(String urlString) {
+    public void onClick(String trailerKey) {
 
+        playVideo(trailerKey);
+
+    }
+
+    public void playVideo(String key){
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + key));
+
+        // Check if the youtube app exists on the device
+        if (intent.resolveActivity(getPackageManager()) == null) {
+            // If the youtube app doesn't exist, then use the browser
+            intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://www.youtube.com/watch?v=" + key));
+        }
+
+        startActivity(intent);
     }
 }
