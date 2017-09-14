@@ -1,5 +1,6 @@
 package com.example.android.popularmovies;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -15,7 +16,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.android.popularmovies.Data.MovieContract;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
@@ -42,6 +45,7 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     ArrayAdapter<String> reviewAdatper;
     LinearLayoutManager rvManager;
     int movieId;
+    String imageURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +90,9 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         rating.setText(thisMovie.rating);
         summary.setText(thisMovie.summary);
         movieId = thisMovie.id;
-        Picasso.with(this).load(thisMovie.MOVIE_POSTER_BASE_URL + thisMovie.imageURLRelativePath).into(thumbnail);
+        imageURL = thisMovie.MOVIE_POSTER_BASE_URL + thisMovie.imageURLRelativePath;
+
+        Picasso.with(this).load(imageURL).into(thumbnail);
 
 
         if (!isOnline()) {
@@ -108,6 +114,32 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
             reviewsList = savedInstanceState.getStringArrayList("Reviews");
             trailerAdapter.setTrailersList(trailersList);
             writeReviewsToTextView(reviewsList);
+        }
+
+
+    }
+
+    public void addMovieToFavouritesDB(){
+
+        ContentValues values = new ContentValues();
+
+        values.put(MovieContract.FavouriteMovies.COLUMN_NAME,thisMovie.name);
+        values.put(MovieContract.FavouriteMovies.COLUMN_IMAGE_URL,imageURL);
+        values.put(MovieContract.FavouriteMovies.COLUMN_DATE,thisMovie.year);
+        values.put(MovieContract.FavouriteMovies.COLUMN_RATE,thisMovie.rating);
+        values.put(MovieContract.FavouriteMovies.COLUMN_DESCRIBTION,thisMovie.summary);
+        values.put(MovieContract.FavouriteMovies.COLUMN_TRAILER_1,"http://www.youtube.com/watch?v="+trailersList.get(0));
+        values.put(MovieContract.FavouriteMovies.COLUMN_TRAILER_2,"http://www.youtube.com/watch?v="+trailersList.get(1));
+        values.put(MovieContract.FavouriteMovies.COLUMN_TRAILER_3,"http://www.youtube.com/watch?v="+trailersList.get(2));
+        values.put(MovieContract.FavouriteMovies.COLUMN_REVIEW_1,reviewsList.get(0));
+        values.put(MovieContract.FavouriteMovies.COLUMN_REVIEW_2,reviewsList.get(1));
+        values.put(MovieContract.FavouriteMovies.COLUMN_REVIEW_3,reviewsList.get(2));
+
+
+        Uri uri=getContentResolver().insert(MovieContract.FavouriteMovies.CONTENT_URI,values);
+
+        if(uri!=null){
+            Toast.makeText(getBaseContext(),uri.toString() ,Toast.LENGTH_LONG);
         }
 
 
