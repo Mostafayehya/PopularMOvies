@@ -20,28 +20,31 @@ public class MovieDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL(
-                "CREATE TABLE " + MovieContract.FavouriteMovies.TABLE_NAME + " (" +
+        String sqlCreationStatement = "CREATE TABLE " + MovieContract.FavouriteMovies.TABLE_NAME + " (" +
 
-                        MovieContract.FavouriteMovies._ID + " INTEGER PRIMARY KEY, " +
-                        MovieContract.FavouriteMovies.COLUMN_NAME + " TEXT NOT NULL, " +
-                        MovieContract.FavouriteMovies.COLUMN_IMAGE_URL + " TEXT NOT NULL, " +
-                        MovieContract.FavouriteMovies.COLUMN_DATE + " TEXT NOT NULL, " +
-                        MovieContract.FavouriteMovies.COLUMN_RATE + " TEXT NOT NULL," +
-                        MovieContract.FavouriteMovies.COLUMN_DESCRIBTION + " TEXT NOT NULL, " +
-                        MovieContract.FavouriteMovies.COLUMN_TRAILER_1 + " TEXT, " +
-                        MovieContract.FavouriteMovies.COLUMN_TRAILER_2 + " TEXT, " +
-                        MovieContract.FavouriteMovies.COLUMN_TRAILER_3 + " TEXT, " +
-                        MovieContract.FavouriteMovies.COLUMN_REVIEW_1 + " TEXT, " +
-                        MovieContract.FavouriteMovies.COLUMN_REVIEW_2 + " TEXT, " +
-                        MovieContract.FavouriteMovies.COLUMN_REVIEW_3 + " TEXT, " +
-                        ");");
+                MovieContract.FavouriteMovies._ID + " INTEGER PRIMARY KEY, " +
+                MovieContract.FavouriteMovies.COLUMN_NAME + " TEXT NOT NULL, " +
+                MovieContract.FavouriteMovies.COLUMN_IMAGE_URL + " TEXT NOT NULL, " +
+                MovieContract.FavouriteMovies.COLUMN_DATE + " TEXT NOT NULL, " +
+                MovieContract.FavouriteMovies.COLUMN_RATE + " TEXT NOT NULL," +
+                MovieContract.FavouriteMovies.COLUMN_DESCRIBTION + " TEXT NOT NULL, " +
+                MovieContract.FavouriteMovies.COLUMN_TRAILER_1 + " TEXT, " +
+                MovieContract.FavouriteMovies.COLUMN_TRAILER_2 + " TEXT, " +
+                MovieContract.FavouriteMovies.COLUMN_TRAILER_3 + " TEXT, " +
+                MovieContract.FavouriteMovies.COLUMN_REVIEW_1 + " TEXT, " +
+                MovieContract.FavouriteMovies.COLUMN_REVIEW_2 + " TEXT, " +
+                MovieContract.FavouriteMovies.COLUMN_REVIEW_3 + " TEXT " +
+                ");";
+
+        db.execSQL(sqlCreationStatement);
 
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS "+ MovieContract.FavouriteMovies.TABLE_NAME);
+        onCreate(db);
 
     }
 }
