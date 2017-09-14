@@ -10,4 +10,6 @@
     <string name="Trailers_word">Trailers:</string>
     <string name="Reviews_word">Reviews:</string>
     <string name="Word_Trailer">Trailer</string>
+
+    <string name="favourite_movies_action_item_name">Favourites</string>
 </resources>

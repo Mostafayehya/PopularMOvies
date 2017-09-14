@@ -18,6 +18,7 @@ import java.util.ArrayList;
 //this is a comment to be able to add the file to the github repo.
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
+    //TODO repclace mMovieList with a Cursor
     private ArrayList<Movie> mMovieList;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
@@ -55,6 +56,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         Context myContext = holder.mImageView.getContext();
         //MOVIE_POSTER_BASE_URL+mMovieList[position].imageURLRelativePath this is the complete movie image url .
 
+        // TODO i think we should extract the urls from the cursor .
         Picasso.with(myContext).load(MOVIE_POSTER_BASE_URL + mMovieList.get(position).imageURLRelativePath).into(holder.mImageView);
 
         holder.mImageView.setVisibility(View.VISIBLE);
@@ -85,6 +87,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         }
     }
 
+    //Todo this should be swap cursor
     void setMoviesList(ArrayList<Movie> data) {
         mMovieList.clear();
         mMovieList.addAll(data);
