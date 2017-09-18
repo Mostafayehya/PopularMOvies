@@ -10,11 +10,11 @@ import android.provider.BaseColumns;
 
 public class MovieContract {
 
-    public static final String CONTENT_AUTHORITY = "com.example.android.favouriteprovider";
+    public static final String CONTENT_AUTHORITY = "com.example.android.popularmovies";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final String PATH_FAVOURITE_MOVIES = "favourite_movies";
+    public static final String PATH_FAVOURITE_MOVIES = "favouriteMovies";
 
 
     public static final class FavouriteMovies implements BaseColumns {
