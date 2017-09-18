@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MovieDBHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "favouriteMovies.db";
 
     public MovieDBHelper(Context context) {
@@ -27,13 +27,9 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                 MovieContract.FavouriteMovies.COLUMN_IMAGE_URL + " TEXT NOT NULL, " +
                 MovieContract.FavouriteMovies.COLUMN_DATE + " TEXT NOT NULL, " +
                 MovieContract.FavouriteMovies.COLUMN_RATE + " TEXT NOT NULL," +
-                MovieContract.FavouriteMovies.COLUMN_DESCRIBTION + " TEXT NOT NULL, " +
-                MovieContract.FavouriteMovies.COLUMN_TRAILER_1 + " TEXT, " +
-                MovieContract.FavouriteMovies.COLUMN_TRAILER_2 + " TEXT, " +
-                MovieContract.FavouriteMovies.COLUMN_TRAILER_3 + " TEXT, " +
-                MovieContract.FavouriteMovies.COLUMN_REVIEW_1 + " TEXT, " +
-                MovieContract.FavouriteMovies.COLUMN_REVIEW_2 + " TEXT, " +
-                MovieContract.FavouriteMovies.COLUMN_REVIEW_3 + " TEXT " +
+                MovieContract.FavouriteMovies.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
+                MovieContract.FavouriteMovies.COLUMN_TRAILERS + " TEXT, " +
+                MovieContract.FavouriteMovies.COLUMN_REVIEWS + " TEXT " +
                 ");";
 
         db.execSQL(sqlCreationStatement);
@@ -43,7 +39,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+ MovieContract.FavouriteMovies.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + MovieContract.FavouriteMovies.TABLE_NAME);
         onCreate(db);
 
     }

@@ -29,8 +29,8 @@ public class MovieProvider extends ContentProvider {
 
 
          // com.example.android.popularmovies/favoritemovies i had an error here because the provided uri to the uriMatcher was missing the content://
-        uriMatcher.addURI(MovieContract.BASE_CONTENT_URI.toString(),MovieContract.PATH_FAVOURITE_MOVIES,MOVIES);
-        uriMatcher.addURI(MovieContract.BASE_CONTENT_URI.toString(), MovieContract.PATH_FAVOURITE_MOVIES + "/#", MOVIES_WITH_ID);
+        uriMatcher.addURI(MovieContract.CONTENT_AUTHORITY,MovieContract.PATH_FAVOURITE_MOVIES,MOVIES);
+        uriMatcher.addURI(MovieContract.CONTENT_AUTHORITY, MovieContract.PATH_FAVOURITE_MOVIES + "/#", MOVIES_WITH_ID);
 
         return uriMatcher;
     }

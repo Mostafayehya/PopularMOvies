@@ -29,13 +29,9 @@ public class MovieContract {
         public static final String COLUMN_IMAGE_URL = "movieImageUrl";
         public static final String COLUMN_DATE = "movieDate";
         public static final String COLUMN_RATE = "movieRate";
-        public static final String COLUMN_DESCRIBTION = "movieDescription";
-        public static final String COLUMN_TRAILER_1 = "movieTrailer_1";
-        public static final String COLUMN_TRAILER_2 = "movieTrailer_2";
-        public static final String COLUMN_TRAILER_3 = "movieTrailer_3";
-        public static final String COLUMN_REVIEW_1 = "movieReview_1";
-        public static final String COLUMN_REVIEW_2 = "movieReview_2";
-        public static final String COLUMN_REVIEW_3 = "movieReview_3";
+        public static final String COLUMN_DESCRIPTION = "movieDescription";
+        public static final String COLUMN_TRAILERS = "movieTrailers";
+        public static final String COLUMN_REVIEWS = "movieReviews";
 
         public static Uri buildMovieUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

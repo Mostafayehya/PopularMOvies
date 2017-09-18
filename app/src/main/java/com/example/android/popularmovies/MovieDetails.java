@@ -46,6 +46,8 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     LinearLayoutManager rvManager;
     int movieId;
     String imageURL;
+    String jsonReviewsResponse;
+    String jsonTrailersResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,19 +129,16 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         values.put(MovieContract.FavouriteMovies.COLUMN_IMAGE_URL, imageURL);
         values.put(MovieContract.FavouriteMovies.COLUMN_DATE, thisMovie.year);
         values.put(MovieContract.FavouriteMovies.COLUMN_RATE, thisMovie.rating);
-        values.put(MovieContract.FavouriteMovies.COLUMN_DESCRIBTION, thisMovie.summary);
-        values.put(MovieContract.FavouriteMovies.COLUMN_TRAILER_1, "http://www.youtube.com/watch?v=" + trailersList.get(0));
-        values.put(MovieContract.FavouriteMovies.COLUMN_TRAILER_2, "http://www.youtube.com/watch?v=" + trailersList.get(1));
-        values.put(MovieContract.FavouriteMovies.COLUMN_TRAILER_3, "http://www.youtube.com/watch?v=" + trailersList.get(2));
-        values.put(MovieContract.FavouriteMovies.COLUMN_REVIEW_1, reviewsList.get(0));
-        values.put(MovieContract.FavouriteMovies.COLUMN_REVIEW_2, reviewsList.get(1));
-        values.put(MovieContract.FavouriteMovies.COLUMN_REVIEW_3, reviewsList.get(2));
+        values.put(MovieContract.FavouriteMovies.COLUMN_DESCRIPTION, thisMovie.summary);
+        values.put(MovieContract.FavouriteMovies.COLUMN_TRAILERS,jsonTrailersResponse);
+        values.put(MovieContract.FavouriteMovies.COLUMN_REVIEWS, jsonReviewsResponse);
+
 
 
         Uri uri = getContentResolver().insert(MovieContract.FavouriteMovies.CONTENT_URI, values);
 
         if (uri != null) {
-            Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG);
+            Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
         }
 
 
@@ -203,8 +202,8 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
             URL reviewsRequestUrl = NetworkUtils.buildUrl(reviewsURL);
 
             try {
-                String jsonTrailersResponse = NetworkUtils.getResponseFromHttpUrl(trailersRequestUrl);
-                String jsonReviewsResponse = NetworkUtils.getResponseFromHttpUrl(reviewsRequestUrl);
+                 jsonTrailersResponse = NetworkUtils.getResponseFromHttpUrl(trailersRequestUrl);
+                 jsonReviewsResponse = NetworkUtils.getResponseFromHttpUrl(reviewsRequestUrl);
 
                 trailersList.clear();
                 trailersList.addAll(OpenMovieJsonUtils
@@ -212,13 +211,6 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
                 reviewsList.clear();
                 reviewsList.addAll(OpenMovieJsonUtils
                         .getArrayListOfReviewsFromJson(MovieDetails.this, jsonReviewsResponse));
-
-                //work around when the size is less than 3
-                if (reviewsList.size() < 3 && reviewsList.get(0) == null) {
-                    reviewsList.add(0, "");
-                    reviewsList.add(1, "");
-                    reviewsList.add(2, "");
-                }
 
                 return trailersList;
 
