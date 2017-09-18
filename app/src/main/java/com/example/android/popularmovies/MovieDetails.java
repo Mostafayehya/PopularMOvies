@@ -214,7 +214,9 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
                         .getArrayListOfReviewsFromJson(MovieDetails.this, jsonReviewsResponse));
 
                 //work around when the size is less than 3
-                if (reviewsList.size() < 3) {
+                if (reviewsList.size() < 3 && reviewsList.get(0) == null) {
+                    reviewsList.add(0, "");
+                    reviewsList.add(1, "");
                     reviewsList.add(2, "");
                 }
 
