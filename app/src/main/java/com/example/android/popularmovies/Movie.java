@@ -9,13 +9,15 @@ import android.os.Parcelable;
 
 
 public class Movie implements Parcelable {
+    final String MOVIE_POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185/";
     String name;
     String rating;
     String summary;
     String year;
     String imageURLRelativePath;
-    final String MOVIE_POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185/";
     int id;
+    String jsonTrailers;
+    String jsonReviews;
 
     public Movie() {
         this.name = "";
@@ -23,17 +25,19 @@ public class Movie implements Parcelable {
         this.summary = "";
         this.year = "";
         this.imageURLRelativePath = "";
-        this.id =0;
+        this.id = 0;
     }
 
-    public Movie(String name, String rating, String summary, String year, String image,int id) {
+    public Movie(String name, String rating, String summary, String year, String image, int id, String jsonTrailers, String jsonReviews) {
         this.name = name;
         this.rating = rating;
         this.summary = summary;
         this.year = year;
 
         this.imageURLRelativePath = image;
-        this.id =id;
+        this.id = id;
+        this.jsonTrailers = jsonTrailers;
+        this.jsonReviews = jsonReviews;
     }
 
     private Movie(Parcel in) {
@@ -42,6 +46,8 @@ public class Movie implements Parcelable {
         summary = in.readString();
         year = in.readString();
         imageURLRelativePath = in.readString();
+        jsonReviews = in.readString();
+        jsonTrailers = in.readString();
         id = in.readInt();
     }
 
@@ -58,6 +64,8 @@ public class Movie implements Parcelable {
         parcel.writeString(summary);
         parcel.writeString(year);
         parcel.writeString(imageURLRelativePath);
+        parcel.writeString(jsonReviews);
+        parcel.writeString(jsonTrailers);
         parcel.writeInt(id);
     }
 

@@ -3,6 +3,7 @@ package com.example.android.popularmovies;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -17,6 +18,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.android.popularmovies.Data.MovieContract;
+
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private ProgressBar mLoadingIndicator;
     private RecyclerView imageRecyclerView;
     private MovieAdapter movieAdapter;
+    Context context = getBaseContext();
 
     // TODO replace this with a cursor
     ArrayList<Movie> movieList = new ArrayList<>(20);
@@ -41,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         setContentView(R.layout.activity_main);
 
@@ -63,10 +66,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         //  loadMoviesData(POPULAR_QUERY_URL);
 
         if (!isOnline()) {
-            showErrorMessage();
-        }
-
-        if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+            LoadFavoritesFromDB();
+        } else if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
             loadMoviesData(POPULAR_QUERY_URL);
         } else {
 
@@ -80,6 +81,37 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         outState.putParcelableArrayList("movies", movieList);
         super.onSaveInstanceState(outState);
     }
+
+
+    private void LoadFavoritesFromDB() {
+
+        Cursor cursor = getContentResolver().query(MovieContract.FavouriteMovies.CONTENT_URI, null, null, null, null);
+
+        int favMoviesCount = cursor.getCount();
+
+        Movie movie;
+
+        ArrayList<Movie> moviesToBeSentToAdapter = new ArrayList<>(favMoviesCount);
+
+            for (int i = 0; cursor.moveToNext(); i++) {
+                movie = new Movie();
+
+                movie.name = cursor.getString(1);
+                movie.imageURLRelativePath = cursor.getString(2);
+                movie.year = cursor.getString(3);
+                movie.rating = cursor.getString(4);
+                movie.summary = cursor.getString(5);
+                movie.jsonTrailers = cursor.getString(6);
+                movie.id = cursor.getInt(8);
+
+                moviesToBeSentToAdapter.add(i, movie);
+            }
+
+        cursor.close();
+
+        movieAdapter.setMoviesList(moviesToBeSentToAdapter);
+    }
+
 
     void loadMoviesData(String url) {
         new loadMovieTask().execute(url);
@@ -165,7 +197,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             }
             super.onPostExecute(m);
         }
+
     }
+
 
     public boolean isOnline() {
         ConnectivityManager cm =
@@ -195,10 +229,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
 
         //excute task that request top rated movies
-        if (id == R.id.action_sortby_rating) {
+        else if (id == R.id.action_sortby_rating) {
             loadMoviesData(TOP_RATED_QUERY_URL);
+        } else {
+            LoadFavoritesFromDB();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

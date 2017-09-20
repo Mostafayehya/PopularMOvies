@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,8 +41,6 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     ArrayList<String> reviewsList = new ArrayList<>(3);
     TrailerAdapter trailerAdapter;
     TextView reviewsTextView;
-    ArrayAdapter<String> reviewAdatper;
-    LinearLayoutManager rvManager;
     int movieId;
     String imageURL;
     String jsonReviewsResponse;
@@ -126,13 +123,13 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         ContentValues values = new ContentValues();
 
         values.put(MovieContract.FavouriteMovies.COLUMN_NAME, thisMovie.name);
-        values.put(MovieContract.FavouriteMovies.COLUMN_IMAGE_URL, imageURL);
+        values.put(MovieContract.FavouriteMovies.COLUMN_IMAGE_URL, thisMovie.imageURLRelativePath);
         values.put(MovieContract.FavouriteMovies.COLUMN_DATE, thisMovie.year);
         values.put(MovieContract.FavouriteMovies.COLUMN_RATE, thisMovie.rating);
         values.put(MovieContract.FavouriteMovies.COLUMN_DESCRIPTION, thisMovie.summary);
-        values.put(MovieContract.FavouriteMovies.COLUMN_TRAILERS,jsonTrailersResponse);
+        values.put(MovieContract.FavouriteMovies.COLUMN_TRAILERS, jsonTrailersResponse);
         values.put(MovieContract.FavouriteMovies.COLUMN_REVIEWS, jsonReviewsResponse);
-
+        values.put(MovieContract.FavouriteMovies.ID,movieId);
 
 
         Uri uri = getContentResolver().insert(MovieContract.FavouriteMovies.CONTENT_URI, values);
@@ -202,8 +199,8 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
             URL reviewsRequestUrl = NetworkUtils.buildUrl(reviewsURL);
 
             try {
-                 jsonTrailersResponse = NetworkUtils.getResponseFromHttpUrl(trailersRequestUrl);
-                 jsonReviewsResponse = NetworkUtils.getResponseFromHttpUrl(reviewsRequestUrl);
+                jsonTrailersResponse = NetworkUtils.getResponseFromHttpUrl(trailersRequestUrl);
+                jsonReviewsResponse = NetworkUtils.getResponseFromHttpUrl(reviewsRequestUrl);
 
                 trailersList.clear();
                 trailersList.addAll(OpenMovieJsonUtils

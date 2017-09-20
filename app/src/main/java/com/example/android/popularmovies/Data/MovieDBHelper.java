@@ -23,13 +23,14 @@ public class MovieDBHelper extends SQLiteOpenHelper {
         String sqlCreationStatement = "CREATE TABLE " + MovieContract.FavouriteMovies.TABLE_NAME + " (" +
 
                 MovieContract.FavouriteMovies._ID + " INTEGER PRIMARY KEY, " +
-                MovieContract.FavouriteMovies.COLUMN_NAME + " TEXT NOT NULL, " +
-                MovieContract.FavouriteMovies.COLUMN_IMAGE_URL + " TEXT NOT NULL, " +
-                MovieContract.FavouriteMovies.COLUMN_DATE + " TEXT NOT NULL, " +
-                MovieContract.FavouriteMovies.COLUMN_RATE + " TEXT NOT NULL," +
-                MovieContract.FavouriteMovies.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
-                MovieContract.FavouriteMovies.COLUMN_TRAILERS + " TEXT, " +
-                MovieContract.FavouriteMovies.COLUMN_REVIEWS + " TEXT " +
+                MovieContract.FavouriteMovies.COLUMN_NAME + " TEXT NOT NULL, " +       //1
+                MovieContract.FavouriteMovies.COLUMN_IMAGE_URL + " TEXT NOT NULL, " +  //2
+                MovieContract.FavouriteMovies.COLUMN_DATE + " TEXT NOT NULL, " +       //3
+                MovieContract.FavouriteMovies.COLUMN_RATE + " TEXT NOT NULL," +        //4
+                MovieContract.FavouriteMovies.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +//5
+                MovieContract.FavouriteMovies.COLUMN_TRAILERS + " TEXT, " +            //6
+                MovieContract.FavouriteMovies.COLUMN_REVIEWS + " TEXT, " +             //7
+                MovieContract.FavouriteMovies.ID + " INTEGER " +                       //8
                 ");";
 
         db.execSQL(sqlCreationStatement);
