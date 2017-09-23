@@ -18,6 +18,7 @@ public class Movie implements Parcelable {
     int id;
     String jsonTrailers;
     String jsonReviews;
+    public int isStoredInDB;
 
     public Movie() {
         this.name = "";
@@ -26,9 +27,10 @@ public class Movie implements Parcelable {
         this.year = "";
         this.imageURLRelativePath = "";
         this.id = 0;
+        this.isStoredInDB = 0;
     }
 
-    public Movie(String name, String rating, String summary, String year, String image, int id, String jsonTrailers, String jsonReviews) {
+    public Movie(String name, String rating, String summary, String year, String image, int id, String jsonTrailers, String jsonReviews, int isStoredInDB) {
         this.name = name;
         this.rating = rating;
         this.summary = summary;
@@ -38,6 +40,7 @@ public class Movie implements Parcelable {
         this.id = id;
         this.jsonTrailers = jsonTrailers;
         this.jsonReviews = jsonReviews;
+        this.isStoredInDB = isStoredInDB;
     }
 
     private Movie(Parcel in) {
@@ -49,6 +52,7 @@ public class Movie implements Parcelable {
         jsonReviews = in.readString();
         jsonTrailers = in.readString();
         id = in.readInt();
+        isStoredInDB = in.readInt();
     }
 
     @Override
@@ -67,6 +71,7 @@ public class Movie implements Parcelable {
         parcel.writeString(jsonReviews);
         parcel.writeString(jsonTrailers);
         parcel.writeInt(id);
+        parcel.writeInt(isStoredInDB);
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {

@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -46,6 +47,7 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     String jsonReviewsResponse;
     String jsonTrailersResponse;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,7 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
 
         mLoadingBar = (ProgressBar) findViewById(R.id.pb_loading_indicator_details);
         mErrorMessage = (TextView) findViewById(R.id.tv_error_message_display_details);
+        Button favouriteButton = (Button) findViewById(R.id.favourite_button);
 
 
         reviewsTextView = (TextView) findViewById(R.id.reviews_text_view);
@@ -91,6 +94,10 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         movieId = thisMovie.id;
         imageURL = thisMovie.MOVIE_POSTER_BASE_URL + thisMovie.imageURLRelativePath;
 
+        if (thisMovie.isStoredInDB ==1) {
+            favouriteButton.setText("Delete from Favorites");
+        }
+
         Picasso.with(this).load(imageURL).into(thumbnail);
 
 
@@ -105,7 +112,9 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         movieTrailersURL = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=c116e57a4053a96cf95605c119b5f697&language=en-US";
         movieReviewsURL = "https://api.themoviedb.org/3/movie/" + movieId + "/reviews?api_key=c116e57a4053a96cf95605c119b5f697&language=en-US";
 
-        if (savedInstanceState == null || !savedInstanceState.containsKey("Trailers") || !savedInstanceState.containsKey("Reviews")) {
+        loadTrailersAndReviewsData(movieTrailersURL, movieReviewsURL);
+
+        if (savedInstanceState == null) {
             loadTrailersAndReviewsData(movieTrailersURL, movieReviewsURL);
         } else {
 
@@ -120,24 +129,36 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
 
     public void addMovieToFavouritesDB(View view) {
 
-        ContentValues values = new ContentValues();
+        if (thisMovie.isStoredInDB == 1) {
+            Uri uriOfMovieToBeDeleted = MovieContract.FavouriteMovies.buildMovieUri(thisMovie.id);
+            int deleted =getContentResolver().delete(uriOfMovieToBeDeleted, null, null);
 
-        values.put(MovieContract.FavouriteMovies.COLUMN_NAME, thisMovie.name);
-        values.put(MovieContract.FavouriteMovies.COLUMN_IMAGE_URL, thisMovie.imageURLRelativePath);
-        values.put(MovieContract.FavouriteMovies.COLUMN_DATE, thisMovie.year);
-        values.put(MovieContract.FavouriteMovies.COLUMN_RATE, thisMovie.rating);
-        values.put(MovieContract.FavouriteMovies.COLUMN_DESCRIPTION, thisMovie.summary);
-        values.put(MovieContract.FavouriteMovies.COLUMN_TRAILERS, jsonTrailersResponse);
-        values.put(MovieContract.FavouriteMovies.COLUMN_REVIEWS, jsonReviewsResponse);
-        values.put(MovieContract.FavouriteMovies.ID,movieId);
+            if (deleted != 0) {
+                Toast.makeText(getBaseContext(),"Movie deleted from your favorite list", Toast.LENGTH_LONG).show();
+            }
+            finish();
 
 
-        Uri uri = getContentResolver().insert(MovieContract.FavouriteMovies.CONTENT_URI, values);
+        } else {
+            thisMovie.isStoredInDB = 1;
+            ContentValues values = new ContentValues();
+            values.put(MovieContract.FavouriteMovies.COLUMN_NAME, thisMovie.name);
+            values.put(MovieContract.FavouriteMovies.COLUMN_IMAGE_URL, thisMovie.imageURLRelativePath);
+            values.put(MovieContract.FavouriteMovies.COLUMN_DATE, thisMovie.year);
+            values.put(MovieContract.FavouriteMovies.COLUMN_RATE, thisMovie.rating);
+            values.put(MovieContract.FavouriteMovies.COLUMN_DESCRIPTION, thisMovie.summary);
+            values.put(MovieContract.FavouriteMovies.COLUMN_TRAILERS, jsonTrailersResponse);
+            values.put(MovieContract.FavouriteMovies.COLUMN_REVIEWS, jsonReviewsResponse);
+            values.put(MovieContract.FavouriteMovies.ID, movieId);
+            values.put(MovieContract.FavouriteMovies.IS_IN_DB, thisMovie.isStoredInDB);
 
-        if (uri != null) {
-            Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+
+            Uri uri = getContentResolver().insert(MovieContract.FavouriteMovies.CONTENT_URI, values);
+
+            if (uri != null) {
+                Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_LONG).show();
+            }
         }
-
 
     }
 

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     Context context = getBaseContext();
 
     // TODO replace this with a cursor
-    ArrayList<Movie> movieList = new ArrayList<>(20);
+    ArrayList<Movie> movieList = new ArrayList<>();
 
     // TODO  plug in your API key
     private final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=c116e57a4053a96cf95605c119b5f697";
@@ -62,28 +62,36 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
         imageRecyclerView.setAdapter(movieAdapter);
 
-        //The default query of the movies is the most popular movies query
-        //  loadMoviesData(POPULAR_QUERY_URL);
 
-        if (!isOnline()) {
-            LoadFavoritesFromDB();
-        } else if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+        if (savedInstanceState == null && isOnline()) {
             loadMoviesData(POPULAR_QUERY_URL);
-        } else {
+        }else{
+            loadMoviesData(TOP_RATED_QUERY_URL);
 
-            movieList = savedInstanceState.getParcelableArrayList("movies");
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(movieList.size() !=20){
+            movieList = LoadFavoritesFromDB();
             movieAdapter.setMoviesList(movieList);
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState); //this is for saving the views of the onCreate() method
+
+        //trick to make the favorite list updates when the details activity of a favorite movie is destroyed
         outState.putParcelableArrayList("movies", movieList);
-        super.onSaveInstanceState(outState);
     }
 
 
-    private void LoadFavoritesFromDB() {
+    private ArrayList<Movie> LoadFavoritesFromDB() {
 
         Cursor cursor = getContentResolver().query(MovieContract.FavouriteMovies.CONTENT_URI, null, null, null, null);
 
@@ -93,23 +101,24 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         ArrayList<Movie> moviesToBeSentToAdapter = new ArrayList<>(favMoviesCount);
 
-            for (int i = 0; cursor.moveToNext(); i++) {
-                movie = new Movie();
+        for (int i = 0; cursor.moveToNext(); i++) {
+            movie = new Movie();
 
-                movie.name = cursor.getString(1);
-                movie.imageURLRelativePath = cursor.getString(2);
-                movie.year = cursor.getString(3);
-                movie.rating = cursor.getString(4);
-                movie.summary = cursor.getString(5);
-                movie.jsonTrailers = cursor.getString(6);
-                movie.id = cursor.getInt(8);
+            movie.name = cursor.getString(1);
+            movie.imageURLRelativePath = cursor.getString(2);
+            movie.year = cursor.getString(3);
+            movie.rating = cursor.getString(4);
+            movie.summary = cursor.getString(5);
+            movie.jsonTrailers = cursor.getString(6);
+            movie.id = cursor.getInt(8);
+            movie.isStoredInDB = cursor.getInt(9);
 
-                moviesToBeSentToAdapter.add(i, movie);
-            }
+            moviesToBeSentToAdapter.add(i, movie);
+        }
 
         cursor.close();
 
-        movieAdapter.setMoviesList(moviesToBeSentToAdapter);
+        return moviesToBeSentToAdapter;
     }
 
 
@@ -232,7 +241,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         else if (id == R.id.action_sortby_rating) {
             loadMoviesData(TOP_RATED_QUERY_URL);
         } else {
-            LoadFavoritesFromDB();
+            movieList = LoadFavoritesFromDB();
+            movieAdapter.setMoviesList(movieList);
         }
 
         return super.onOptionsItemSelected(item);

@@ -30,7 +30,9 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                 MovieContract.FavouriteMovies.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +//5
                 MovieContract.FavouriteMovies.COLUMN_TRAILERS + " TEXT, " +            //6
                 MovieContract.FavouriteMovies.COLUMN_REVIEWS + " TEXT, " +             //7
-                MovieContract.FavouriteMovies.ID + " INTEGER " +                       //8
+                MovieContract.FavouriteMovies.ID + " INTEGER, " +                       //8
+                MovieContract.FavouriteMovies.IS_IN_DB + " INTEGER " +                  //9
+
                 ");";
 
         db.execSQL(sqlCreationStatement);

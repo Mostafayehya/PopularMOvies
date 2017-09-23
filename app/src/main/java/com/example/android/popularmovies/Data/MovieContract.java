@@ -22,6 +22,8 @@ public class MovieContract {
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAVOURITE_MOVIES).build();
 
+
+
         // Defining schema
         public static final String TABLE_NAME = "favouriteMovies";
 
@@ -33,6 +35,9 @@ public class MovieContract {
         public static final String COLUMN_TRAILERS = "movieTrailers";
         public static final String COLUMN_REVIEWS = "movieReviews";
         public static final String ID = "movieID";
+        public static final String IS_IN_DB = "movieInDB";
+
+
 
         public static Uri buildMovieUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
