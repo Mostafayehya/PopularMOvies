@@ -1,5 +1,7 @@
 package com.example.android.popularmovies;
-
+/*
+ THIS  PROJECT WAS MADE BY MOSTAFA YEHYA MANSOUR .
+ */
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
