@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
  * Created by mostafayehya on 13/09/17.
  */
 
-public class MovieContract {
+public final class MovieContract {
 
     public static final String CONTENT_AUTHORITY = "com.example.android.popularmovies";
 

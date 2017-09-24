@@ -2,6 +2,7 @@ package com.example.android.popularmovies;
 /*
  THIS  PROJECT WAS MADE BY MOSTAFA YEHYA MANSOUR .
  */
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,14 +33,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private ProgressBar mLoadingIndicator;
     private RecyclerView imageRecyclerView;
     private MovieAdapter movieAdapter;
-    Context context = getBaseContext();
+
+    int lastFirstVisiblePosition;
 
     // TODO replace this with a cursor
     ArrayList<Movie> movieList = new ArrayList<>();
 
-    // TODO  plug in your API key
-    private final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key="+NetworkUtils.apiKey;
-    private final String TOP_RATED_QUERY_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key="+NetworkUtils.apiKey;
+
+    private final String POPULAR_QUERY_URL = "http://api.themoviedb.org/3/movie/popular?api_key=" +NetworkUtils.apiKey;
+    private final String TOP_RATED_QUERY_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=" +NetworkUtils.apiKey;
 
     //TODO Create the MovieDbOpenHelper class
     //TODO Create the MovieContract class
@@ -67,22 +70,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         if (savedInstanceState == null && isOnline()) {
             loadMoviesData(POPULAR_QUERY_URL);
-        }else{
-            loadMoviesData(TOP_RATED_QUERY_URL);
-
         }
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        if(movieList.size() !=20){
-            movieList = LoadFavoritesFromDB();
-            movieAdapter.setMoviesList(movieList);
-        }
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -90,7 +81,30 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         //trick to make the favorite list updates when the details activity of a favorite movie is destroyed
         outState.putParcelableArrayList("movies", movieList);
+        outState.putInt("lastFirstVisiblePosition",lastFirstVisiblePosition);
     }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        movieList = savedInstanceState.getParcelableArrayList("movies");
+        movieAdapter.setMoviesList(movieList);
+        lastFirstVisiblePosition= savedInstanceState.getInt("lastFirstVisiblePosition");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        lastFirstVisiblePosition = ((LinearLayoutManager)imageRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((LinearLayoutManager) imageRecyclerView.getLayoutManager()).scrollToPositionWithOffset(lastFirstVisiblePosition,0);
+    }
+
+
 
 
     private ArrayList<Movie> LoadFavoritesFromDB() {

@@ -57,7 +57,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         //MOVIE_POSTER_BASE_URL+mMovieList[position].imageURLRelativePath this is the complete movie image url .
 
         // TODO i think we should extract the urls from the cursor .
-        Picasso.with(myContext).load(MOVIE_POSTER_BASE_URL + mMovieList.get(position).imageURLRelativePath).into(holder.mImageView);
+        Picasso.with(myContext)
+                .load(MOVIE_POSTER_BASE_URL + mMovieList
+                        .get(position).imageURLRelativePath)
+                .error(R.drawable.ic_play_black_48dp)
+                .into(holder.mImageView);
 
         holder.mImageView.setVisibility(View.VISIBLE);
     }
@@ -93,8 +97,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         mMovieList.addAll(data);
         notifyDataSetChanged();
     }
-
-
 
 
 }

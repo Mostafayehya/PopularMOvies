@@ -53,7 +53,7 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        Context context = getBaseContext();
         setContentView(R.layout.activity_movie_details);
 
         movieName = (TextView) findViewById(R.id.movie_name);
@@ -109,11 +109,10 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
         }
 
 
-        //https://api.themoviedb.org/3/movie/{id}/reviews?api_key=c116e57a4053a96cf95605c119b5f697
 
-        // TODO (1) plug in your API key
+
         movieTrailersURL = "https://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=" + NetworkUtils.apiKey;
-        movieReviewsURL = "https://api.themoviedb.org/3/movie/" + movieId + "/reviews?api_key="+ NetworkUtils.apiKey;
+        movieReviewsURL = "https://api.themoviedb.org/3/movie/" + movieId + "/reviews?api_key=" + NetworkUtils.apiKey;
 
         loadTrailersAndReviewsData(movieTrailersURL, movieReviewsURL);
 
@@ -131,7 +130,7 @@ public class MovieDetails extends AppCompatActivity implements TrailerAdapter.Tr
     }
 
     public void addMovieToFavouritesDB(View view) {
-     if (thisMovie.isStoredInDB == 1) {
+        if (thisMovie.isStoredInDB == 1) {
             Uri uriOfMovieToBeDeleted = MovieContract.FavouriteMovies.buildMovieUri(thisMovie.id);
             int deleted = getContentResolver().delete(uriOfMovieToBeDeleted, null, null);
 
